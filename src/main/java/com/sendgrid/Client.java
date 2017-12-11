@@ -47,6 +47,7 @@ class HttpDeleteWithBody extends HttpEntityEnclosingRequestBase {
  */
 public class Client {
 
+	private static final Charset UTF_8 = Charset.forName("UTF-8");
 	private CloseableHttpClient httpClient;
 	private Boolean test;
 	private boolean createdHttpClient;
@@ -201,7 +202,7 @@ public class Client {
 			}
 		}
 
-		httpPost.setEntity(new StringEntity(request.getBody(), Charset.forName("UTF-8")));
+		httpPost.setEntity(new StringEntity(request.getBody(), UTF_8));
 		writeContentTypeIfNeeded(request, httpPost);
 
 		return executeApiCall(httpPost);
@@ -228,7 +229,7 @@ public class Client {
 			}
 		}
 
-		httpPatch.setEntity(new StringEntity(request.getBody(), Charset.forName("UTF-8")));
+		httpPatch.setEntity(new StringEntity(request.getBody(), UTF_8));
 		writeContentTypeIfNeeded(request, httpPatch);
 
 		return executeApiCall(httpPatch);
@@ -255,7 +256,7 @@ public class Client {
 			}
 		}
 
-		httpPut.setEntity(new StringEntity(request.getBody(), Charset.forName("UTF-8")));
+		httpPut.setEntity(new StringEntity(request.getBody(), UTF_8));
 		writeContentTypeIfNeeded(request, httpPut);
 
 		return executeApiCall(httpPut);
@@ -281,7 +282,7 @@ public class Client {
 			}
 		}
 
-		httpDelete.setEntity(new StringEntity(request.getBody(), Charset.forName("UTF-8")));
+		httpDelete.setEntity(new StringEntity(request.getBody(), UTF_8));
 		writeContentTypeIfNeeded(request, httpDelete);
 
 		return executeApiCall(httpDelete);
@@ -300,7 +301,7 @@ public class Client {
 				Response response = getResponse(serverResponse);
 				if(response.getStatusCode() >= 300) {
 					//throwing IOException here to not break API behavior.
-					throw new IOException("Request returned status Code "+response.getStatusCode()+"Body:"+response.getBody());
+					throw new IOException(String.format("Request returned Status Code: %d, Body: %s", response.getStatusCode(), response.getBody()));
 				}
 				return response;
 			} finally {
